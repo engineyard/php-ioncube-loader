@@ -1,0 +1,7 @@
+#!/bin/sh
+
+if [ "XX" = "X$(command -v php5dismod)X" ] ; then # PHP 5.3 style
+    rm -f /etc/php5/conf.d/ioncube-loader.ini
+else
+    [ "$1" = "remove" ] && php5dismod ioncube-loader
+fi
