@@ -7,6 +7,28 @@
 # This has to be exported to make some magic below work.
 export DH_OPTIONS
 
+PKG_NAME = ioncube-loader
+PKG_VER = 4.6.1
+BIN_PKG_NAME = php5-ioncube-loader
+
+PKGDIR = ioncube
+EXTDIR = $(shell /usr/bin/php-config5 --extension-dir)
+PHPAPI = $(shell /usr/bin/php-config5 --phpapi)
+INIDIR = $(shell /usr/bin/dpkg --compare-versions $(PHPAPI) lt 20100525 && echo conf.d || echo mods-available)
+PHP_MAJOR = $(shell /usr/bin/php-config5 --version | cut -d. -f1)
+PHP_MINOR = $(shell /usr/bin/php-config5 --version | cut -d. -f2)
 
 %:
-	dh $@ 
+	dh $@ --sourcedirectory=${PKGDIR}
+
+override_dh_auto_install:
+	echo "php:Depends=phpapi-`php-config5 --phpapi`" >> \
+		debian/${BIN_PKG_NAME}.substvars
+	mkdir -p debian/${BIN_PKG_NAME}/$(EXTDIR)
+	install -m 644 -o root -g root $(PKGDIR)/ioncube_loader_lin_$(PHP_MAJOR).$(PHP_MINOR).so \
+		debian/${BIN_PKG_NAME}/$(EXTDIR)/ioncube_loader.so
+	if [ -f "debian/${PKG_NAME}.ini" ]; then \
+		mkdir -p debian/$(BIN_PKG_NAME)/etc/php5/$(INIDIR); \
+		cp debian/${PKG_NAME}.ini debian/$(BIN_PKG_NAME)/etc/php5/$(INIDIR); \
+	fi
+

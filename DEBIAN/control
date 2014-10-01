@@ -1,9 +1,13 @@
-Package: ioncube-loader
-Version: 4.6.1-1
-Architecture: amd64
-Maintainer: Engine Yard Packaging <packaging@engineyard.com>
-Pre-Depends: php5 | php5-cli | php5-cgi
-Depends: libc6 (>= 2.3)
+Source: php-ioncube-loader
 Section: web
 Priority: optional
+Maintainer: Engine Yard Packaging <packaging@engineyard.com>
+Standards-Version: 3.9.5
+Build-Depends: debhelper, php5-dev
+
+Package: php5-ioncube-loader
+Architecture: amd64
+Depends: ${shlibs:Depends}, ${php:Depends}, ${misc:Depends}
 Description: ionCube Loader for PHP
+ .
+ ionCube Loader handles the reading and execution of encoded files at run time.

@@ -1,5 +1,0 @@
-#!/bin/sh
-
-if [ ! "XX" = "X$(command -v php5enmod)X" ] ; then # PHP 5.4 style
-	[ "$1" = "configure" ] && php5enmod ioncube-loader
-fi
