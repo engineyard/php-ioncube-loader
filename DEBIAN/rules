@@ -22,6 +22,9 @@ PHP_MINOR = $(shell /usr/bin/php-config5 --version | cut -d. -f2)
 	dh $@ --sourcedirectory=${PKGDIR}
 
 override_dh_auto_install:
+	# Workaround for zend_extension being terrible.
+	echo "; priority=01" > debian/${PKG_NAME}.ini
+	echo "zend_extension=$(EXTDIR)/ioncube_loader.so" >> debian/${PKG_NAME}.ini
 	echo "php:Depends=phpapi-`php-config5 --phpapi`" >> \
 		debian/${BIN_PKG_NAME}.substvars
 	mkdir -p debian/${BIN_PKG_NAME}/$(EXTDIR)

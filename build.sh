@@ -1,39 +1,62 @@
 #!/bin/sh
 
-set -e nounset
-set -e errexit
+set -o nounset
+set -o errexit
 
 DATE="$(date +"%a, %d %b %Y %T %z")"
 YEAR="$(date +"%Y")"
+PACKAGING_VERSION=6
 
 TARBALL="ioncube_loaders_lin_x86-64.tar.gz"
 IONCUBE_URL="http://downloads3.ioncube.com/loader_downloads/$TARBALL"
 
-errexit() {
-	echo "$1"
+output(){
+	printf "$1\n"
+}
+
+except() {
+	output "$1"
 	exit 1
 }
 
-if [ ! -d debian ]; then
-	errexit "Run from root of packaging directory."
-fi
-
 CWD=$(pwd)
 
-# Check available commands
-for cmd in curl
-do
-	command -v $cmd > /dev/null || errexit "$cmd required."
-done
+download() {
+	printf "Downloading...\n"
+	if command -v curl >/dev/null; then
+		curl -s -L $IONCUBE_URL -o $TARBALL
+	elif command -v wget >/dev/null; then
+		wget -O $TARBALL $IONCUBE_URL
+	else
+		except "Needs curl or wget."
+	fi
+}
+
+if [ ! -d debian ]; then
+	except "Run from root of packaging directory."
+fi
+
+if [ "$#" != "0" ]; then
+	if [ "$1" = "download" ]; then
+		download
+		exit 0
+	fi
+fi
+if [ ! -f $TARBALL ]; then
+	except "No tarball found ($TARBALL) - run ./$(basename $0) download"
+else
+	output "Extrating tarball..."
+	tar -xzvf $TARBALL >/dev/null 2>&1
+fi
 
 read -p "ionCube version: " VERSION
 if [ -z $VERSION ]; then
-	errexit "Version must be specified."
+	except "Version must be specified."
 fi
 
-read -p "Ubuntu series: " UBUNTU_SERIES
+read -p "Ubuntu series (precise, trusty): " UBUNTU_SERIES
 if [ -z $UBUNTU_SERIES ]; then
-	errexit "Ubuntu series must be specified."
+	except "Ubuntu series must be specified."
 fi
 case $UBUNTU_SERIES in
 	precise)
@@ -43,18 +66,12 @@ case $UBUNTU_SERIES in
 		UBUNTU_VERSION="14.04"
 	;;
 	*)
-		errexit "Unsupported series '$UBUNTU_SERIES' - should be one of: precise, trusty"
+		except "Unsupported series '$UBUNTU_SERIES'"
 esac
-
-if [ ! -f $TARBALL ]; then
-	curl -s -L $IONCUBE_URL -o $TARBALL
-fi
-
-tar -xzvf $TARBALL
 
 # Changelog
 cat - > debian/changelog <<EOF
-php-ioncube-loader (${VERSION}-1~ubuntu${UBUNTU_VERSION}) $UBUNTU_SERIES; urgency=low
+php-ioncube-loader (${VERSION}-${PACKAGING_VERSION}~ubuntu${UBUNTU_VERSION}) $UBUNTU_SERIES; urgency=low
 
   * Upstream release.
 

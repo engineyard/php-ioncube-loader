@@ -3,7 +3,7 @@ Section: web
 Priority: optional
 Maintainer: Engine Yard Packaging <packaging@engineyard.com>
 Standards-Version: 3.9.5
-Build-Depends: debhelper, php5-dev
+Build-Depends: debhelper, sed, php5-dev
 
 Package: php5-ioncube-loader
 Architecture: amd64
