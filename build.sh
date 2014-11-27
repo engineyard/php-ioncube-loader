@@ -3,6 +3,9 @@
 set -o nounset
 set -o errexit
 
+DEBFULLNAME=${DEBFULLNAME:-"Engine Yard Packaging"}
+DEBEMAIL=${DEBEMAIL:-"packaging@engineyard.com"}
+
 DATE="$(date +"%a, %d %b %Y %T %z")"
 YEAR="$(date +"%Y")"
 PACKAGING_VERSION=6
@@ -75,12 +78,12 @@ php-ioncube-loader (${VERSION}-${PACKAGING_VERSION}~ubuntu${UBUNTU_VERSION}) $UB
 
   * Upstream release.
 
- -- Engine Yard Packaging <packaging@engineyard.com>  ${DATE}
+ -- ${DEBFULLNAME} <${DEBEMAIL}>  ${DATE}
 EOF
 
 # Copyright
 cat - > debian/copyright <<EOF
-This package was debianized by Engine Yard Packaging <packaging@engineyard.com>
+This package was debianized by ${DEBFULLNAME} <${DEBEMAIL}>
 on ${DATE}.
 
 It was downloaded from http://www.ioncube.com/loaders.php
@@ -97,7 +100,7 @@ License:
 
     http://www.ioncube.com/tnc.php
 
-The Debian packaging is copyright ${YEAR}, Engine Yard Packaging <packaging@engineyard.com> and
+The Debian packaging is copyright ${YEAR}, ${DEBFULLNAME} <${DEBEMAIL}> and
 is licensed under the GPL, see '/usr/share/common-licenses/GPL'.
 
 EOF
