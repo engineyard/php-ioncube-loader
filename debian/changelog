@@ -1,5 +1,5 @@
-php-ioncube-loader (4.6.1-6~ubuntu12.04) precise; urgency=low
+php-ioncube-loader (4.7.2-6~ubuntu14.04) trusty; urgency=low
 
   * Upstream release.
 
- -- Engine Yard Packaging <packaging@engineyard.com>  Thu, 02 Oct 2014 16:27:25 +0100
+ -- Engine Yard Packaging <packaging@engineyard.com>  Thu, 27 Nov 2014 17:46:55 +0000
