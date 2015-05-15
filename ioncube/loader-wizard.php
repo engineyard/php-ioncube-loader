@@ -5,7 +5,7 @@
  *
  * ionCube is a registered trademark of ionCube Ltd. 
  *
- * Copyright (c) ionCube Ltd. 2002-2014
+ * Copyright (c) ionCube Ltd. 2002-2015
  */
 
 
@@ -130,7 +130,7 @@ function php4_http_build_query($formdata, $numeric_prefix = null, $key = null ) 
 
 function script_version()
 {
-    return "2.47";
+    return "2.49";
 }
 
 function retrieve_latest_wizard_version()
@@ -2365,7 +2365,11 @@ function loader_system($loader_location)
         if (preg_match("/ioncube_loader_.\.._(.)\.(.)\.(..?)(_nonts)?(_amd64)?\.dll/i",$loader_strs,$version_matches)) {
             $loader_system['oscode'] = 'win';
             $loader_system['thread_safe'] = (isset($version_matches[4]) && $version_matches[4] == '_nonts')?0:1;
-            $loader_system['wordsize'] = (isset($version_matches[5]) && $version_matches[5] == '_amd64')?64:32;
+			if (preg_match("/_localtime([0-9][0-9])/i",$loader_strs,$size_matches)) {
+				$loader_system['wordsize'] = ($size_matches[1] == '64')?64:32;
+			} else {
+				$loader_system['wordsize'] = 32;
+			}
             $loader_system['arch'] = ($loader_system['wordsize'] == 64)?'x86-64':'x86';
             $loader_system['php_version_major'] = $version_matches[1];
             $loader_system['php_version_minor'] = $version_matches[2];
@@ -3791,6 +3795,7 @@ function heading()
     echo <<<EOT
     <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN "http://www.w3.org/TR/html4/loose.dtd">
     <html>
+    <meta name="robots" content="noindex, nofollow">
     <head>
         <title>ionCube Loader Wizard</title>
         <link rel="stylesheet" type="text/css" href="$self?page=css">

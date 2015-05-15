@@ -1,5 +1,5 @@
 This package was debianized by Engine Yard Packaging <packaging@engineyard.com>
-on Thu, 27 Nov 2014 17:46:55 +0000.
+on Thu, 14 May 2015 17:07:26 -0700.
 
 It was downloaded from http://www.ioncube.com/loaders.php
 
@@ -9,12 +9,12 @@ Upstream Author(s):
 
 Copyright:
 
-    Copyright (C) 2002-2014 ionCube Software LLP.
+    Copyright (C) 2002-2015 ionCube Software LLP.
 
 License:
 
     http://www.ioncube.com/tnc.php
 
-The Debian packaging is copyright 2014, Engine Yard Packaging <packaging@engineyard.com> and
+The Debian packaging is copyright 2015, Engine Yard Packaging <packaging@engineyard.com> and
 is licensed under the GPL, see '/usr/share/common-licenses/GPL'.
 
